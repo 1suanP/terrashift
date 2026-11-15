@@ -1,0 +1,23 @@
+# TerraShift - backend runtime (FastAPI + NASA data pipeline)
+# Versions are the ones the app was developed and tested with (Python 3.14).
+
+# Web API
+fastapi==0.162.7
+uvicorn[standard]==0.54.0
+pydantic==2.14.3
+python-dotenv==1.2.4
+requests==2.34.2
+
+# NASA data access (Earthdata Login, CMR search, OPeNDAP)
+earthaccess==0.19.0
+xarray==2026.9.0
+dask==2026.8.0
+pydap==3.5.11
+netCDF4==1.7.5.1.post1
+
+# Analysis
+numpy==2.5.4
+pandas==3.1.1
+scipy==1.18.1
+pymannkendall==1.4.3
+scikit-image==0.26.0

@@ -1,0 +1,193 @@
+/* The sidebar is only 250px wide and already scrolls, so this panel keeps
+   padding small and does not add a second scrollbar. */
+.analysis-panel {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  padding: 14px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  transition: box-shadow 0.4s ease, border-color 0.4s ease;
+}
+
+/* Flash when a variable is sent over from Variable Discovery */
+.analysis-panel.highlight {
+  border-color: #00FFFF;
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.6);
+}
+
+.panel-title {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #00FFFF;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.error-box {
+  background: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  color: #ff6666;
+  padding: 10px;
+  font-size: 11px;
+  margin-bottom: 15px;
+}
+
+.control-group {
+  margin-bottom: 20px;
+}
+
+.control-group label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #8899AA;
+  margin-bottom: 8px;
+}
+
+.control-group select {
+  width: 100%;
+  min-width: 0;
+  text-overflow: ellipsis;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  color: #fff;
+  padding: 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  cursor: pointer;
+}
+
+.control-group select:hover {
+  border-color: #00FFFF;
+}
+
+.control-group select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.control-group input {
+  width: 100%;
+  min-width: 0;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  color: #fff;
+  padding: 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+}
+
+.control-group input:hover {
+  border-color: #00FFFF;
+}
+
+.control-group input:focus {
+  outline: none;
+  border-color: #00FFFF;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.control-group input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.var-description {
+  font-size: 10px;
+  color: #8899AA;
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+.region-info {
+  font-size: 11px;
+  color: #fff;
+  padding: 8px;
+  background: rgba(0, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.analyze-btn {
+  width: 100%;
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid #00FFFF;
+  color: #00FFFF;
+  padding: 12px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  letter-spacing: 2px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.analyze-btn:hover:not(:disabled) {
+  background: rgba(0, 255, 255, 0.2);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+}
+
+.analyze-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.result-box {
+  margin-top: 20px;
+  padding: 10px;
+  background: rgba(0, 255, 255, 0.05);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+.result-title {
+  font-size: 11px;
+  letter-spacing: 2px;
+  color: #00FFFF;
+  margin-bottom: 15px;
+}
+
+/* Label and value share a line when they fit; long values wrap below, right-aligned. */
+.result-item {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 2px 8px;
+  font-size: 11px;
+  color: #fff;
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.result-item span:first-child {
+  color: #8899AA;
+  flex-shrink: 0;
+}
+
+.result-item span:last-child {
+  margin-left: auto;
+  min-width: 0;
+  text-align: right;
+}
+
+.significance-increasing {
+  color: #ff6666;
+}
+
+.significance-decreasing {
+  color: #66ccff;
+}
+
+.significance-none {
+  color: #999;
+}
+
+.interpretation {
+  margin-top: 15px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: #fff;
+  padding: 8px;
+  overflow-wrap: anywhere;
+  background: rgba(0, 0, 0, 0.3);
+  border-left: 3px solid #00FFFF;
+}

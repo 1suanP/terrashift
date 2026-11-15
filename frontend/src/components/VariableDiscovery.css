@@ -1,0 +1,345 @@
+/* Variable Discovery - matches the cyan HUD style of App.css */
+.vd-overlay {
+  position: absolute;
+  inset: 24px;
+  z-index: 15;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px 24px;
+  background: rgba(5, 11, 22, 0.88);
+  border: 1px solid var(--border-glow);
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.15);
+  backdrop-filter: blur(2px);
+  font-family: 'Courier New', monospace;
+  color: var(--text-primary);
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden; /* nothing may paint outside the box */
+  overflow-wrap: anywhere;
+}
+
+.vd-overlay > * {
+  min-width: 0;
+}
+
+.vd-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 12px 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(0, 255, 255, 0.2);
+}
+
+.vd-title {
+  font-size: 20px;
+  letter-spacing: 3px;
+  color: var(--accent-cyan);
+  text-shadow: 0 0 10px var(--accent-cyan);
+}
+
+.vd-subtitle {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
+
+.vd-tabs, .vd-chips {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.vd-tabs button, .vd-chips button {
+  background: transparent;
+  border: 1px solid rgba(0, 255, 255, 0.25);
+  color: var(--text-secondary);
+  padding: 7px 12px;
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vd-tabs button:hover, .vd-chips button:hover,
+.vd-tabs button.active, .vd-chips button.active {
+  border-color: var(--accent-cyan);
+  color: var(--accent-cyan);
+  background: rgba(0, 255, 255, 0.1);
+  box-shadow: 0 0 12px rgba(0, 255, 255, 0.3);
+}
+
+.vd-legend {
+  font-size: 10px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+}
+
+.vd-legend .vd-badge {
+  margin: 0 6px 0 12px;
+}
+
+.vd-legend .vd-badge:first-child {
+  margin-left: 0;
+}
+
+/* minmax(0, ...) stops long option text from widening the columns */
+.vd-filters {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr) minmax(0, 1fr);
+  gap: 8px;
+}
+
+/* Narrow windows: search on its own row, the two dropdowns below it */
+@media (max-width: 1200px) {
+  .vd-filters {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  .vd-filters .vd-search {
+    grid-column: 1 / -1;
+  }
+}
+
+.vd-filters input, .vd-filters select {
+  width: 100%;
+  min-width: 0;
+  text-overflow: ellipsis;
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  color: #fff;
+  padding: 9px 10px;
+  font-family: inherit;
+  font-size: 11px;
+}
+
+.vd-filters input:focus, .vd-filters select:focus {
+  outline: none;
+  border-color: var(--accent-cyan);
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+}
+
+.vd-list {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-right: 6px;
+}
+
+.vd-card {
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(0, 255, 255, 0.18);
+  border-left: 3px solid var(--accent-cyan);
+  padding: 12px 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.vd-card.requires_dataset {
+  border-left-color: #ffb347;
+}
+
+.vd-card:hover, .vd-card.open {
+  border-color: rgba(0, 255, 255, 0.5);
+  box-shadow: 0 0 14px rgba(0, 255, 255, 0.15);
+}
+
+.vd-card-head {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap; /* badges drop below the name when space runs out */
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  background: none;
+  border: none;
+  padding: 0;
+  color: inherit;
+  font-family: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.vd-card-names {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  flex: 1 1 200px;
+  min-width: 0;
+}
+
+.vd-common {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.vd-scientific {
+  font-size: 10px;
+  color: var(--text-secondary);
+}
+
+.vd-card-badges {
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  flex: 0 1 auto;
+  min-width: 0;
+}
+
+.vd-badge {
+  display: inline-block;
+  font-size: 8px;
+  letter-spacing: 1px;
+  padding: 3px 6px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.vd-badge.available { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+.vd-badge.requires { border-color: #ffb347; color: #ffb347; }
+.vd-badge.tested { border-color: #7CFC9A; color: #7CFC9A; }
+.vd-badge.untested { border-style: dashed; }
+
+.vd-card-short {
+  font-size: 11px;
+  color: var(--text-secondary);
+  margin-top: 8px;
+  line-height: 1.5;
+}
+
+.vd-card-body {
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid rgba(0, 255, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vd-label {
+  font-size: 9px;
+  letter-spacing: 2px;
+  color: var(--accent-cyan);
+  margin-bottom: 6px;
+}
+
+.vd-section p, .vd-trend-status p {
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.vd-facts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(200px, 100%), 1fr));
+  gap: 8px 16px;
+  font-size: 11px;
+}
+
+.vd-facts.compact {
+  margin-top: 10px;
+}
+
+.vd-facts span:first-child {
+  display: block;
+  font-size: 8px;
+  letter-spacing: 1px;
+  color: var(--text-secondary);
+  margin-bottom: 2px;
+}
+
+.vd-dataset {
+  color: var(--text-secondary);
+  margin-bottom: 6px;
+}
+
+.vd-dataset strong {
+  color: var(--text-primary);
+}
+
+.vd-trend-status {
+  padding: 10px 12px;
+  border: 1px dashed rgba(255, 255, 255, 0.25);
+}
+
+.vd-trend-status.tested {
+  border: 1px solid rgba(124, 252, 154, 0.4);
+}
+
+.vd-result-row {
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  font-size: 11px;
+}
+
+.vd-result-where {
+  margin-right: 10px;
+}
+
+.vd-result-stats {
+  color: var(--text-secondary);
+  font-size: 10px;
+  margin-top: 3px;
+}
+
+.vd-sig { font-size: 10px; letter-spacing: 1px; }
+.vd-sig-increasing { color: #ff6666; }
+.vd-sig-decreasing { color: #66ccff; }
+.vd-sig-none { color: #999; }
+
+.vd-fineprint {
+  font-size: 10px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin-top: 6px;
+}
+
+.vd-go {
+  align-self: flex-start;
+  margin-top: 4px;
+  background: rgba(0, 255, 255, 0.1);
+  border: 1px solid var(--accent-cyan);
+  color: var(--accent-cyan);
+  padding: 10px 14px;
+  font-family: inherit;
+  font-size: 10px;
+  letter-spacing: 1px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.vd-go:hover {
+  background: rgba(0, 255, 255, 0.2);
+  box-shadow: 0 0 18px rgba(0, 255, 255, 0.5);
+}
+
+.vd-go.secondary {
+  border-color: #ffb347;
+  color: #ffb347;
+  background: rgba(255, 179, 71, 0.08);
+}
+
+.vd-question {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.vd-card.question .vd-go {
+  margin-top: 12px;
+}
+
+.vd-empty, .vd-loading, .vd-error {
+  font-size: 12px;
+  color: var(--text-secondary);
+  padding: 20px 0;
+}
+
+.vd-loading { color: var(--accent-cyan); animation: pulse 2s infinite; }
+.vd-error { color: #ff6666; }
