@@ -1,10 +1,4 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "fastapi",
-  "functions": {
-    "server.py": {
-      "maxDuration": 300,
-      "excludeFiles": "{frontend/**,tests/**,deploy/**,Dockerfile,.dockerignore,**/__pycache__/**}"
-    }
-  }
+  "framework": "vite"
 }
