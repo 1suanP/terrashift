@@ -2,6 +2,7 @@
 FastAPI backend for TerraShift ("Every shift tells a story.")
 Wraps existing Python analysis modules with REST API
 """
+import os
 import sys
 from pathlib import Path
 
@@ -30,17 +31,23 @@ app = FastAPI(
     openapi_url="/api/openapi.json"
 )
 
-# Configure CORS for frontend
+# Configure CORS: which websites may call this API from a browser.
+# Local development origins are always allowed. Deployed frontends are added with
+# ALLOWED_ORIGINS (comma-separated, e.g. "https://terrashift-ptsw.vercel.app").
+LOCAL_ORIGINS = [
+    "http://localhost:5173",  # Vite default port
+    "http://localhost:5174",  # Vite alternate port
+    "http://localhost:3000",  # Alternative React port
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:5174",
+    "http://127.0.0.1:3000",
+]
+DEPLOYED_ORIGINS = [
+    o.strip().rstrip("/") for o in os.environ.get("ALLOWED_ORIGINS", "").split(",") if o.strip()
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:5173",  # Vite default port
-        "http://localhost:5174",  # Vite alternate port
-        "http://localhost:3000",  # Alternative React port
-        "http://127.0.0.1:5173",
-        "http://127.0.0.1:5174",
-        "http://127.0.0.1:3000",
-    ],
+    allow_origins=LOCAL_ORIGINS + DEPLOYED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

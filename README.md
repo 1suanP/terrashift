@@ -109,6 +109,35 @@ If the API runs somewhere other than `http://localhost:8000`, create `frontend/.
 with `VITE_API_URL=https://your-api-host` before building. Allowed browser origins are set in
 `backend/api/main.py` (CORS).
 
+## Deploy
+
+The website and the data API are deployed separately: the website is static files (for
+example on Vercel), and the API is a Python service (for example a Hugging Face Space).
+
+**1. API on Hugging Face Spaces (Docker)**
+
+```bash
+sh deploy/huggingface/prepare-space.sh            # creates ../terrashift-space with only the API files
+cd ../terrashift-space
+git init -b main && git add -A && git commit -m "TerraShift API"
+git remote add origin https://huggingface.co/spaces/<hf-username>/terrashift-api
+git push -u origin main                           # password = a Hugging Face access token with write access
+```
+
+In the Space settings, add the secrets `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`. To allow
+a website other than the default (`https://terrashift-ptsw.vercel.app`), add a variable
+`ALLOWED_ORIGINS` with a comma-separated list of site addresses. The API is then available at
+`https://<hf-username>-terrashift-api.hf.space` (check `/api/health`).
+
+**2. Website on Vercel**
+
+Import the GitHub repository with **Root Directory** set to `frontend` (Vite is detected
+automatically). Under Settings → Environment Variables add `VITE_API_URL` set to the API
+address from step 1, then redeploy. The address is built into the site, so every change to it
+needs a redeploy.
+
+The `Dockerfile` also works on other container hosts; set `PORT` if the host requires it.
+
 ## What to expect
 
 - The first view of a globe data layer downloads each month from NASA (about 10 s per month).

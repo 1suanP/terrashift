@@ -65,7 +65,7 @@ async def search_granules(request: SearchRequest):
     try:
         # Authenticate first
         try:
-            data_discovery.authenticate()
+            data_discovery.authenticate(persist=False)  # never write credentials to ~/.netrc
         except DataDiscoveryError as e:
             raise HTTPException(
                 status_code=401,

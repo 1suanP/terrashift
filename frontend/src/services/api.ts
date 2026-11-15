@@ -3,8 +3,16 @@
  */
 import axios from 'axios';
 
-// Override with VITE_API_URL (e.g. in frontend/.env.local) when the backend runs elsewhere.
-const API_BASE_URL = import.meta.env.VITE_API_URL ?? 'http://localhost:8000';
+// Backend address. Set VITE_API_URL at build time when the backend runs elsewhere
+// (e.g. on Vercel: Settings > Environment Variables). It is baked into the build.
+export const API_BASE_URL = (import.meta.env.VITE_API_URL ?? 'http://localhost:8000').replace(/\/+$/, '');
+export const API_IS_LOCAL = /^https?:\/\/(localhost|127\.0\.0\.1)(:|\/|$)/.test(API_BASE_URL);
+
+/** Message for when the backend cannot be reached, worded for local or deployed use. */
+export const backendUnreachableMessage = () =>
+  API_IS_LOCAL
+    ? `Could not reach the backend at ${API_BASE_URL}. Start it with: uvicorn api.main:app --reload`
+    : `Could not reach the TerraShift data service at ${API_BASE_URL}. It may be waking up; try again in a minute.`;
 
 const api = axios.create({
   baseURL: API_BASE_URL,

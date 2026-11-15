@@ -37,7 +37,7 @@ async def validate_credentials():
         
         # Try to authenticate
         try:
-            data_discovery.authenticate()
+            data_discovery.authenticate(persist=False)  # never write credentials to ~/.netrc
             return AuthValidateResponse(
                 valid=True,
                 authenticated=True,

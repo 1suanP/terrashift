@@ -144,7 +144,7 @@ def run_analysis(request: AnalysisRunRequest, background_tasks: BackgroundTasks)
         # In production, use Celery or background workers
         try:
             # Authenticate with NASA Earthdata first
-            data_discovery.authenticate()
+            data_discovery.authenticate(persist=False)  # never write credentials to ~/.netrc
             
             result = run_pipeline(analysis_request)
             

@@ -26,7 +26,8 @@ router = APIRouter()
 
 NOMINATIM_URL = "https://nominatim.openstreetmap.org/reverse"
 PHOTON_URL = "https://photon.komoot.io/api/"
-USER_AGENT = "TerraShift/3.0 (NASA Space Apps student project; local development)"
+# Identifies the app to Photon and Nominatim, as their usage policies require.
+USER_AGENT = "TerraShift/3.0 (NASA Space Apps project; +https://github.com/1suanP/terrashift)"
 ATTRIBUTION = "Place names \u00a9 OpenStreetMap contributors (ODbL), via Nominatim"
 SEARCH_ATTRIBUTION = "Search by Photon (komoot) \u00b7 \u00a9 OpenStreetMap contributors (ODbL)"
 

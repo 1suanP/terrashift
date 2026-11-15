@@ -27,7 +27,7 @@ import { BRAND } from './brand';
 import { SearchBar } from './components/SearchBar';
 import type { PlacePick } from './components/SearchBar';
 import { IconBox, IconClose, IconInfo, IconLayers, IconMinus, IconPlus, IconReset, IconRotate } from './components/icons';
-import apiService from './services/api';
+import apiService, { backendUnreachableMessage } from './services/api';
 import type { AnalysisRequest, Catalogue, DemoPresetInfo, MapLayerInfo, ReverseGeocode } from './services/api';
 import { useMapLayer } from './hooks/useMapLayer';
 import type { MapLayerState } from './hooks/useMapLayer';
@@ -72,7 +72,7 @@ function App() {
   useEffect(() => {
     apiService.getCatalogue()
       .then((c) => { setCatalogue(c); setCatalogueError(''); })
-      .catch(() => setCatalogueError('Could not reach the backend on port 8000. Start it with: uvicorn api.main:app --reload'));
+      .catch(() => setCatalogueError(backendUnreachableMessage()));
   }, [analysisCount]);
   useEffect(() => { apiService.getMapLayers().then(setLayers).catch(() => setLayers([])); }, []);
 

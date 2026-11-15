@@ -4,7 +4,7 @@
  * only completed analyses report one.
  */
 import { useEffect, useMemo, useState } from 'react';
-import apiService from '../services/api';
+import apiService, { backendUnreachableMessage } from '../services/api';
 import type { Catalogue, CatalogueVariable, CompletedAnalysis, TrendQuestion } from '../services/api';
 import type { AnalysisPreset } from './AnalysisPanel';
 import './VariableDiscovery.css';
@@ -85,7 +85,7 @@ export const VariableDiscovery = ({ refreshKey, onInvestigate }: Props) => {
     apiService
       .getCatalogue()
       .then((c) => { setCatalogue(c); setError(''); })
-      .catch(() => setError('Could not load the variable catalogue. Is the backend running on port 8000?'));
+      .catch(() => setError(`Could not load the variable catalogue. ${backendUnreachableMessage()}`));
   }, [refreshKey]);
 
   const byId = useMemo(() => {

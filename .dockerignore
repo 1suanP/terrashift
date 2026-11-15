@@ -1,0 +1,16 @@
+# Keep the backend image small and free of secrets
+.git
+.venv
+**/__pycache__
+**/*.pyc
+.pytest_cache
+.hypothesis
+**/.env
+**/.env.*
+!.env.example
+backend/cache
+frontend
+tests
+deploy
+*.log
+.DS_Store

@@ -2,7 +2,7 @@
  * Analysis Panel - User can select parameters and run analysis
  */
 import { useState, useEffect, useRef } from 'react';
-import apiService from '../services/api';
+import apiService, { backendUnreachableMessage } from '../services/api';
 import type { Dataset, Variable, AnalysisResult, Region } from '../services/api';
 import './AnalysisPanel.css';
 
@@ -59,7 +59,7 @@ export const AnalysisPanel = ({ preset = null, onAnalysisComplete }: AnalysisPan
         setSelectedDataset((prev) => prev || data[0].key);
       }
     } catch (err) {
-      setError('Failed to load datasets. Is the backend running?');
+      setError(`Failed to load datasets. ${backendUnreachableMessage()}`);
     }
   };
 
