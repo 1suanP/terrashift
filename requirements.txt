@@ -1,5 +1,7 @@
 # TerraShift - backend runtime (FastAPI + NASA data pipeline)
 # Versions are the ones the app was developed and tested with (Python 3.14).
+# Kept lean so the API fits a 500 MB serverless bundle (Vercel). Test-only and
+# optional packages are in requirements-dev.txt.
 
 # Web API
 fastapi==0.162.7
@@ -13,11 +15,10 @@ earthaccess==0.19.0
 xarray==2026.9.0
 dask==2026.8.0
 pydap==3.5.11
-netCDF4==1.7.5.1.post1
+cftime==1.6.6.1        # decodes GPM IMERG's non-standard calendar
 
 # Analysis
 numpy==2.5.4
 pandas==3.1.1
 scipy==1.18.1
 pymannkendall==1.4.3
-scikit-image==0.26.0

@@ -41,6 +41,7 @@ LOCAL_ORIGINS = [
     "http://127.0.0.1:5173",
     "http://127.0.0.1:5174",
     "http://127.0.0.1:3000",
+    "https://terrashift-ptsw.vercel.app",  # the public TerraShift website
 ]
 DEPLOYED_ORIGINS = [
     o.strip().rstrip("/") for o in os.environ.get("ALLOWED_ORIGINS", "").split(",") if o.strip()

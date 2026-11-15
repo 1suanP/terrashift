@@ -146,8 +146,8 @@ export const AnalysisPanel = ({ preset = null, onAnalysisComplete }: AnalysisPan
       console.log('Analysis submitted, ID:', response.analysis_id);
       setError('Processing data...');
 
-      // Get the result
-      const analysisResult = await apiService.getAnalysisResult(response.analysis_id);
+      // The run response carries the result; the extra GET is only for older backends.
+      const analysisResult = response.result ?? (await apiService.getAnalysisResult(response.analysis_id));
       console.log('Analysis complete:', analysisResult);
       setResult(analysisResult);
       setError('');

@@ -34,10 +34,15 @@ class AnalysisRunRequest(BaseModel):
 
 
 class AnalysisRunResponse(BaseModel):
-    """Response with analysis ID"""
+    """Response with analysis ID and, when complete, the full result.
+
+    The result is included so clients need only one request. On serverless hosts
+    a follow-up GET may reach a different instance that does not hold the cache.
+    """
     analysis_id: str
     status: str
     message: str
+    result: Optional["AnalysisResultResponse"] = None
 
 
 class AnalysisStatus(BaseModel):
@@ -95,6 +100,9 @@ class AnalysisResultResponse(BaseModel):
     sens_slope_value: float
     interpretation: str
     time_series: TimeSeriesData
+
+
+AnalysisRunResponse.model_rebuild()  # resolve the forward reference to AnalysisResultResponse
 
 
 @router.post("/run", response_model=AnalysisRunResponse)
@@ -160,7 +168,8 @@ def run_analysis(request: AnalysisRunRequest, background_tasks: BackgroundTasks)
             return AnalysisRunResponse(
                 analysis_id=analysis_id,
                 status="complete",
-                message="Analysis completed successfully"
+                message="Analysis completed successfully",
+                result=_to_response(analysis_id, result),
             )
             
         except InsufficientDataError as e:
@@ -228,9 +237,12 @@ async def get_analysis_result(analysis_id: str):
     
     if cached["status"] != "complete":
         raise HTTPException(status_code=202, detail="Analysis still in progress")
-    
-    result: AnalysisResult = cached["result"]
-    
+
+    return _to_response(analysis_id, cached["result"])
+
+
+def _to_response(analysis_id: str, result: AnalysisResult) -> AnalysisResultResponse:
+    """Convert a pipeline result into the API response model."""
     series = result.time_series.series
     timestamps = [ts.isoformat() for ts in series.index]
     anomalies = result.time_series.anomalies

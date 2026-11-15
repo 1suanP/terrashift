@@ -354,7 +354,7 @@ export const apiService = {
   },
 
   // Run analysis
-  async runAnalysis(request: AnalysisRequest): Promise<{ analysis_id: string; status: string }> {
+  async runAnalysis(request: AnalysisRequest): Promise<{ analysis_id: string; status: string; result?: AnalysisResult | null }> {
     const response = await analysisApi.post('/api/analysis/run', request);
     return response.data;
   },

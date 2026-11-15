@@ -10,6 +10,7 @@ Maps are cached on disk (``backend/cache/maps``) because each NASA read costs ~8
 from __future__ import annotations
 
 import logging
+import os
 import re
 import threading
 import time
@@ -26,7 +27,16 @@ from modules.errors import DataAccessError, DataDiscoveryError
 
 logger = logging.getLogger(__name__)
 
-CACHE_DIR = Path(__file__).resolve().parent.parent / "backend" / "cache" / "maps"
+def _default_cache_dir() -> Path:
+    """backend/cache/maps locally; /tmp on serverless hosts, where only /tmp is writable."""
+    if os.environ.get("TERRASHIFT_CACHE_DIR"):
+        return Path(os.environ["TERRASHIFT_CACHE_DIR"])
+    if os.environ.get("VERCEL") or os.environ.get("AWS_LAMBDA_FUNCTION_NAME"):
+        return Path("/tmp/terrashift-cache/maps")
+    return Path(__file__).resolve().parent.parent / "backend" / "cache" / "maps"
+
+
+CACHE_DIR = _default_cache_dir()
 MONTHS_TTL_SECONDS = 6 * 3600
 GLOBAL_BOX = (-180.0, -90.0, 180.0, 90.0)
 
@@ -241,10 +251,13 @@ def load_month(key: str, year: int, month: int) -> MapGrid:
             grid = _read_granule(urls[month], key, layer.stride)
         else:
             raise
-    CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    tmp = path.with_suffix(".tmp.npz")
-    np.savez_compressed(tmp, lat=grid.lat, lon=grid.lon, values=grid.values.astype(np.float32))
-    tmp.replace(path)
+    try:
+        CACHE_DIR.mkdir(parents=True, exist_ok=True)
+        tmp = path.with_suffix(".tmp.npz")
+        np.savez_compressed(tmp, lat=grid.lat, lon=grid.lon, values=grid.values.astype(np.float32))
+        tmp.replace(path)
+    except OSError as exc:  # read-only or full disk: serve the map anyway, just uncached
+        logger.warning("could not cache %s: %s", path.name, exc)
     return grid
 
 

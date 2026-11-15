@@ -111,32 +111,31 @@ with `VITE_API_URL=https://your-api-host` before building. Allowed browser origi
 
 ## Deploy
 
-The website and the data API are deployed separately: the website is static files (for
-example on Vercel), and the API is a Python service (for example a Hugging Face Space).
+Both parts run free on Vercel's Hobby plan, as **two Vercel projects from this one repository**.
 
-**1. API on Hugging Face Spaces (Docker)**
+**1. API project (FastAPI as a Vercel Function)**
 
-```bash
-sh deploy/huggingface/prepare-space.sh            # creates ../terrashift-space with only the API files
-cd ../terrashift-space
-git init -b main && git add -A && git commit -m "TerraShift API"
-git remote add origin https://huggingface.co/spaces/<hf-username>/terrashift-api
-git push -u origin main                           # password = a Hugging Face access token with write access
-```
+Import the repository at [vercel.com/new](https://vercel.com/new) a second time, name it
+`terrashift-api`, and keep **Root Directory** at the repository root (`./`). Vercel detects
+FastAPI and serves `server.py`; `vercel.json` raises the time limit to 300 s (the Hobby maximum)
+and `.python-version` selects Python 3.14. Under **Environment Variables** add
+`EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`, then deploy. Check `https://<api-domain>/api/health`.
 
-In the Space settings, add the secrets `EARTHDATA_USERNAME` and `EARTHDATA_PASSWORD`. To allow
-a website other than the default (`https://terrashift-ptsw.vercel.app`), add a variable
-`ALLOWED_ORIGINS` with a comma-separated list of site addresses. The API is then available at
-`https://<hf-username>-terrashift-api.hf.space` (check `/api/health`).
+The live site `https://terrashift-ptsw.vercel.app` is allowed to call the API by default; add other
+sites with an `ALLOWED_ORIGINS` variable (comma-separated).
 
-**2. Website on Vercel**
+**2. Website project**
 
-Import the GitHub repository with **Root Directory** set to `frontend` (Vite is detected
-automatically). Under Settings → Environment Variables add `VITE_API_URL` set to the API
-address from step 1, then redeploy. The address is built into the site, so every change to it
-needs a redeploy.
+Import the repository with **Root Directory** `frontend` (Vite is detected automatically). Under
+Settings → Environment Variables add `VITE_API_URL` = the API address from step 1, then redeploy.
+The address is built into the site, so every change to it needs a redeploy.
 
-The `Dockerfile` also works on other container hosts; set `PORT` if the host requires it.
+Limits on the free plan: each request may run for at most 300 seconds (keep GPM precipitation
+analyses to about 10 years or less), downloaded maps are cached only while an instance stays warm,
+and the Discover page's "tested this session" list can reset between requests.
+
+A `Dockerfile` is included for container hosts (Cloud Run, Render, a VPS); set `PORT` and
+`ALLOWED_ORIGINS` there.
 
 ## What to expect
 

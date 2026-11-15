@@ -45,8 +45,9 @@ export function useTrendAnalysis(onComplete?: () => void) {
     }
     setState({ status: 'loading', key, startedAt: Date.now(), estimateSeconds });
     try {
-      const { analysis_id } = await apiService.runAnalysis(request);
-      const result = await apiService.getAnalysisResult(analysis_id);
+      // The run response carries the result; the extra GET is only for older backends.
+      const run = await apiService.runAnalysis(request);
+      const result = run.result ?? (await apiService.getAnalysisResult(run.analysis_id));
       cache.current.set(key, result);
       if (latest.current === key) setState({ status: 'done', key, request, result });
       onComplete?.();

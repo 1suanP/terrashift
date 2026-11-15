@@ -1,5 +1,6 @@
 # TerraShift backend (FastAPI + NASA data pipeline) as a container.
-# Works on Hugging Face Spaces (Docker SDK, port 7860) and most container hosts.
+# Optional: for container hosts (Google Cloud Run, Render, Fly.io, a VPS...).
+# The free deployment uses Vercel instead (see README, "Deploy").
 # The website (frontend/) is deployed separately, e.g. on Vercel.
 #
 # Required secrets at run time (never bake them into the image):
@@ -15,7 +16,7 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PIP_NO_CACHE_DIR=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1
 
-# Hugging Face runs containers as user 1000; use the same everywhere.
+# Run as an unprivileged user.
 RUN useradd --create-home --uid 1000 user
 
 WORKDIR /app

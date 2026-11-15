@@ -4,3 +4,5 @@ pytest==9.2.0
 hypothesis==6.170.15
 httpx==0.28.1          # FastAPI TestClient
 pillow==13.0.0         # frontend/scripts/build-textures.py
+netCDF4==1.7.5.1.post1 # local NetCDF files in tests
+scikit-image==0.26.0   # optional /api/globe/contours route (not used by the website)
